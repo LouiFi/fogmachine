@@ -54,7 +54,7 @@ exports.init = function (program) {
   fm.use('/public', express.static(fe.join(__dirname, program.userinterface)));
   // Serve the webapp
   fm.get('/', function (req, res) {
-    res.sendFile(fe.join(program.userinterface, 'public.html'), { root: __dirname });
+    res.sendFile(fe.join(program.userinterface, './src/index.js'), { root: __dirname });
   });
   // Serve Shared Page
   fm.all('/admin', function (req, res) {
@@ -77,12 +77,12 @@ exports.init = function (program) {
   // File Explorer
   require('./modules/file-explorer.js').setup(fm, program);
   require('./modules/download.js').setup(fm, program);
-  
+
   // User System and Login API + Middleware
   if (program.users) {
     require("./modules/login.js").setup(fm, program);
   }
-  
+
   const loki = require('lokijs');
   const db = new loki(program.database);
   require('./modules/admin.js').setup(fm, program, db);
